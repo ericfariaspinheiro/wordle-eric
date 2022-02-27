@@ -74,7 +74,7 @@ class Board extends React.Component {
     if(this.props.index === 0){
       return (
         <div className="gameBoard">
-          <BoardRow allWords={this.props.allWords[0]} eachLetter={this.props.eachLetter} index={this.props.index} style={{paddingTop: 27}} />
+          <BoardRow allWords={this.props.allWords[0]} eachLetter={this.props.eachLetter} index={this.props.index} />
           <EmptyBoardRow EmptyBoardRow />
           <EmptyBoardRow EmptyBoardRow />
           <EmptyBoardRow EmptyBoardRow />
@@ -186,7 +186,7 @@ class BoardRow extends React.Component {
 class LetterBox extends React.Component {
   render(){
     return(
-      <div className='letterBox allLetters' style={this.props.style}> 
+      <div className='letterBox allLetters' > 
         {this.props.eachLetter}
       </div>
     )
