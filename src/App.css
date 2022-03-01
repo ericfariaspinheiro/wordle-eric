@@ -1,9 +1,32 @@
+body {
+  background: rgb(40, 40, 40);
+  background: radial-gradient(
+    circle,
+    rgba(40, 40, 40, 1) 0%,
+    rgba(5, 5, 5, 1) 100%
+  );
+}
+
 #pageHeader {
   width: 100%;
-  height: 50px;
+  height: 70px;
   border-bottom: black solid 1px;
   text-align: center;
+  color: white;
+  background: rgb(40, 40, 40);
+  background: radial-gradient(
+    circle,
+    rgba(40, 40, 40, 1) 0%,
+    rgba(5, 5, 5, 1) 100%
+  );
 }
+
+#pageTitle {
+  margin: 0;
+  padding-top: 15px;
+  font-family: Arial, sans-serif;
+}
+
 #fullGame {
   width: 345px;
   margin: auto;
@@ -41,6 +64,9 @@
   font-size: larger;
   box-sizing: border-box;
   padding-top: 20px;
+  color: white;
+  font-family: Arial, sans-serif;
+  font-weight: bolder;
 }
 
 .keyboardRow {
@@ -52,6 +78,28 @@
 
 .keyButton {
   height: 53px;
-  padding-left: 10px;
-  padding-right: 10px;
+  box-shadow: inset 0px 1px 3px 0px #465755;
+  background: linear-gradient(to bottom, #3a4542 5%, #2f3636 100%);
+  background-color: #3a4542;
+  border-radius: 5px;
+  border: 1px solid #27302d;
+  display: inline-block;
+  cursor: pointer;
+  color: #ffffff;
+  font-family: Arial;
+  font-size: 15px;
+  font-weight: bold;
+  padding: 9px 17px;
+  text-decoration: none;
+  text-shadow: 0px -1px 0px #2b665e;
+  margin: 1px;
+}
+
+.keyButton:hover {
+  background: linear-gradient(to bottom, #6c7c7c 5%, #768d87 100%);
+  background-color: #6c7c7c;
+}
+.keyButton:active {
+  position: relative;
+  top: 1px;
 }

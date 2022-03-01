@@ -1,11 +1,19 @@
 import React from 'react';
 import './App.css';
+import {dictionary} from './dictionary'
 
 class App extends React.Component {
   state = {
+    turnWord: "",
     eachLetter: [],
     allWords: [],
     index: 0
+  }
+
+  componentDidMount(){
+    const index = Object.keys(dictionary);
+    const answerWord = dictionary[index[Math.floor(Math.random()*index.length)]];
+    this.setState({turnWord: answerWord})
   }
 
   handleButtonClick = (e) => {
@@ -19,12 +27,12 @@ class App extends React.Component {
       this.setState({eachLetter: [...this.state.eachLetter, newLetter]})
       
     } 
-    else if(this.state.eachLetter.length === 5){
-      const fullWord = this.state.eachLetter;
-      this.increaseIndex();
-      this.updateAllWords(fullWord);
-      this.setState({eachLetter: []})
-    }
+    // else if(this.state.eachLetter.length === 5){
+    //   const fullWord = this.state.eachLetter;
+    //   this.increaseIndex();
+    //   this.updateAllWords(fullWord);
+    //   this.setState({eachLetter: []})
+    // }
   }
 
   updateAllWords = (wordToAdd) => {
@@ -37,6 +45,13 @@ class App extends React.Component {
     this.setState({currentLetter: newLetter})
   
   }
+
+  handleDeleteClick = () => {
+    const popLastLetter = [...this.state.eachLetter];
+    popLastLetter.pop()
+    this.setState({eachLetter: popLastLetter})
+  }
+
   increaseIndex = () => {
     this.setState({index: this.state.index + 1})
   }
@@ -47,11 +62,11 @@ class App extends React.Component {
         <Header />
         <div id="fullGame">
           <Board allWords={this.state.allWords} eachLetter={this.state.eachLetter} index={this.state.index} />
-          <Keyboard onButtonclick={this.handleButtonClick} />
+          <Keyboard onButtonclick={this.handleButtonClick} onDelClick={this.handleDeleteClick} />
         </div>
         <div>
           <h3>{this.state.eachLetter.length}</h3>
-          <h3>{this.state.currentLetter}</h3>
+          <h3>{this.state.turnWord}</h3>
           <h3>{this.state.allWords}</h3>
         </div>
       </div>
@@ -63,7 +78,7 @@ class Header extends React.Component {
   render() {
     return(
       <div id='pageHeader'>
-        <h1>Eric's Wordle</h1>
+        <h1 id="pageTitle">Eric's Wordle</h1>
       </div>
     )
   }
@@ -223,14 +238,14 @@ class Keyboard extends React.Component {
         </div>
         <div className='keyboardRow'>
           <button className='keyButton'>enter</button>
-          <button className='keyButton'>Z</button>
-          <button className='keyButton'>X</button>
-          <button className='keyButton'>C</button>
-          <button className='keyButton'>V</button>
-          <button className='keyButton'>B</button>
-          <button className='keyButton'>N</button>
-          <button className='keyButton'>M</button>
-          <button className='keyButton'>del</button>
+          <button className='keyButton' onClick={this.props.onButtonclick}>Z</button>
+          <button className='keyButton' onClick={this.props.onButtonclick}>X</button>
+          <button className='keyButton' onClick={this.props.onButtonclick}>C</button>
+          <button className='keyButton' onClick={this.props.onButtonclick}>V</button>
+          <button className='keyButton' onClick={this.props.onButtonclick}>B</button>
+          <button className='keyButton' onClick={this.props.onButtonclick}>N</button>
+          <button className='keyButton' onClick={this.props.onButtonclick}>M</button>
+          <button className='keyButton' onClick={this.props.onDelClick}>del</button>
         </div>
       </div>
     )
