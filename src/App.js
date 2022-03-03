@@ -60,7 +60,8 @@ class App extends React.Component {
         for (let i = 0; i < filteredLetters.length; i++){
           if(this.state.eachLetter.indexOf(filteredLetters[i]) === turnWordArray.indexOf(filteredLetters[i])){
             document.getElementsByClassName(`allLetters ${filteredLetters[i]}`)[0].style.backgroundColor = "green";
-            document.getElementsByClassName(`allLetters ${filteredLetters[i]}`)[0].style.animation = "flip-horizontal-bottom 0.4s cubic-bezier(0.455, 0.030, 0.515, 0.955) both";
+            document.getElementsByClassName(`allLetters ${filteredLetters[i]}`)[0].animate()
+            "flip-horizontal-bottom 0.4s cubic-bezier(0.455, 0.030, 0.515, 0.955) both";
           }
         }
         
