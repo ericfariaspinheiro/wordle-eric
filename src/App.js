@@ -11,8 +11,7 @@ class App extends React.Component {
   }
 
   componentDidMount(){
-    const index = Object.keys(dictionary);
-    const answerWord = dictionary[index[Math.floor(Math.random()*index.length)]];
+    const answerWord = dictionary[Math.floor(Math.random()*dictionary.length)];
     this.setState({turnWord: answerWord})
   }
 
@@ -27,12 +26,6 @@ class App extends React.Component {
       this.setState({eachLetter: [...this.state.eachLetter, newLetter]})
       
     } 
-    // else if(this.state.eachLetter.length === 5){
-    //   const fullWord = this.state.eachLetter;
-    //   this.increaseIndex();
-    //   this.updateAllWords(fullWord);
-    //   this.setState({eachLetter: []})
-    // }
   }
 
   updateAllWords = (wordToAdd) => {
@@ -52,8 +45,34 @@ class App extends React.Component {
     this.setState({eachLetter: popLastLetter})
   }
 
+  handleEnterClick = () => {
+    if(this.state.eachLetter.length === 5){
+      const fullWordString = this.state.eachLetter.join("").toLocaleLowerCase();
+      if(dictionary.indexOf(fullWordString) === -1){
+        alert("Word not valid!");
+      } else {
+        
+        const turnWordArray = this.state.turnWord.toUpperCase().split("");
+        const filteredLetters = this.state.eachLetter.filter(letter => {
+          return turnWordArray.indexOf(letter) > -1;
+        });
+
+        for (let i = 0; i < filteredLetters.length; i++){
+          if(this.state.eachLetter.indexOf(filteredLetters[i]) === turnWordArray.indexOf(filteredLetters[i])){
+            document.getElementsByClassName(`allLetters ${filteredLetters[i]}`)[0].style.backgroundColor = "green";
+            document.getElementsByClassName(`allLetters ${filteredLetters[i]}`)[0].style.animation = "flip-horizontal-bottom 0.4s cubic-bezier(0.455, 0.030, 0.515, 0.955) both";
+          }
+        }
+        
+      }
+      //this.increaseIndex();
+      //this.updateAllWords(this.state.eachLetter);
+      //this.setState({eachLetter: []})
+    }
+  }
+
   increaseIndex = () => {
-    this.setState({index: this.state.index + 1})
+    this.setState({index: this.state.index + 1})    
   }
 
   render(){
@@ -61,13 +80,21 @@ class App extends React.Component {
       <div className="App">
         <Header />
         <div id="fullGame">
-          <Board allWords={this.state.allWords} eachLetter={this.state.eachLetter} index={this.state.index} />
-          <Keyboard onButtonclick={this.handleButtonClick} onDelClick={this.handleDeleteClick} />
+          <Board 
+            allWords={this.state.allWords} 
+            eachLetter={this.state.eachLetter} 
+            index={this.state.index} 
+          />
+          <Keyboard 
+            onButtonclick={this.handleButtonClick} 
+            onDelClick={this.handleDeleteClick} 
+            onEnderClick={this.handleEnterClick}
+          />
         </div>
         <div>
-          <h3>{this.state.eachLetter.length}</h3>
-          <h3>{this.state.turnWord}</h3>
-          <h3>{this.state.allWords}</h3>
+          <h3 className='debug'>{this.state.eachLetter.length}</h3>
+          <h3 className='debug'>{this.state.turnWord}</h3>
+          <h3 className='debug'>{this.state.allWords}</h3>
         </div>
       </div>
     );
@@ -90,11 +117,11 @@ class Board extends React.Component {
       return (
         <div className="gameBoard">
           <BoardRow allWords={this.props.allWords[0]} eachLetter={this.props.eachLetter} index={this.props.index} />
-          <EmptyBoardRow EmptyBoardRow />
-          <EmptyBoardRow EmptyBoardRow />
-          <EmptyBoardRow EmptyBoardRow />
-          <EmptyBoardRow EmptyBoardRow />
-          <EmptyBoardRow EmptyBoardRow />
+          <EmptyBoardRow />
+          <EmptyBoardRow />
+          <EmptyBoardRow />
+          <EmptyBoardRow />
+          <EmptyBoardRow />
         </div> 
       )
     } else if (this.props.index === 1){
@@ -102,10 +129,10 @@ class Board extends React.Component {
         <div className="gameBoard">
           <BoardRow allWords={this.props.allWords[0]} eachLetter={this.props.eachLetter}  />
           <BoardRow allWords={this.props.allWords[1]} eachLetter={this.props.eachLetter}  />
-          <EmptyBoardRow EmptyBoardRow />
-          <EmptyBoardRow EmptyBoardRow />
-          <EmptyBoardRow EmptyBoardRow />
-          <EmptyBoardRow EmptyBoardRow />
+          <EmptyBoardRow />
+          <EmptyBoardRow />
+          <EmptyBoardRow />
+          <EmptyBoardRow />
         </div> 
       )
     } else if (this.props.index === 2){
@@ -114,9 +141,9 @@ class Board extends React.Component {
           <BoardRow allWords={this.props.allWords[0]} eachLetter={this.props.eachLetter}  />
           <BoardRow allWords={this.props.allWords[1]} eachLetter={this.props.eachLetter}  />
           <BoardRow allWords={this.props.allWords[2]} eachLetter={this.props.eachLetter}  />
-          <EmptyBoardRow EmptyBoardRow />
-          <EmptyBoardRow EmptyBoardRow />
-          <EmptyBoardRow EmptyBoardRow />
+          <EmptyBoardRow />
+          <EmptyBoardRow />
+          <EmptyBoardRow />
         </div> 
       )
     } else if (this.props.index === 3){
@@ -126,8 +153,8 @@ class Board extends React.Component {
           <BoardRow allWords={this.props.allWords[1]} eachLetter={this.props.eachLetter}  />
           <BoardRow allWords={this.props.allWords[2]} eachLetter={this.props.eachLetter}  />
           <BoardRow allWords={this.props.allWords[3]} eachLetter={this.props.eachLetter}  />
-          <EmptyBoardRow EmptyBoardRow />
-          <EmptyBoardRow EmptyBoardRow />
+          <EmptyBoardRow />
+          <EmptyBoardRow />
         </div> 
       )
     } else if (this.props.index === 4){
@@ -138,7 +165,7 @@ class Board extends React.Component {
           <BoardRow allWords={this.props.allWords[2]} eachLetter={this.props.eachLetter}  />
           <BoardRow allWords={this.props.allWords[3]} eachLetter={this.props.eachLetter}  />
           <BoardRow allWords={this.props.allWords[4]} eachLetter={this.props.eachLetter}  />
-          <EmptyBoardRow EmptyBoardRow />
+          <EmptyBoardRow />
         </div> 
       )
     } else if (this.props.index === 5){
@@ -201,7 +228,7 @@ class BoardRow extends React.Component {
 class LetterBox extends React.Component {
   render(){
     return(
-      <div className='letterBox allLetters' > 
+      <div className={`letterBox allLetters ${this.props.eachLetter}`} > 
         {this.props.eachLetter}
       </div>
     )
@@ -237,7 +264,7 @@ class Keyboard extends React.Component {
           <button className='keyButton' onClick={this.props.onButtonclick}>L</button>
         </div>
         <div className='keyboardRow'>
-          <button className='keyButton'>enter</button>
+          <button className='keyButton' onClick={this.props.onEnderClick}>enter</button>
           <button className='keyButton' onClick={this.props.onButtonclick}>Z</button>
           <button className='keyButton' onClick={this.props.onButtonclick}>X</button>
           <button className='keyButton' onClick={this.props.onButtonclick}>C</button>

@@ -7,6 +7,10 @@ body {
   );
 }
 
+.debug {
+  color: white;
+}
+
 #pageHeader {
   width: 100%;
   height: 70px;
