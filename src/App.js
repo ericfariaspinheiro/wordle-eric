@@ -7,7 +7,8 @@ class App extends React.Component {
     turnWord: "",
     eachLetter: [],
     allWords: [],
-    index: 0
+    index: 0,
+    guesses: []
   }
 
   componentDidMount(){
@@ -48,32 +49,44 @@ class App extends React.Component {
   handleEnterClick = () => {
     if(this.state.eachLetter.length === 5){
       const fullWordString = this.state.eachLetter.join("").toLocaleLowerCase();
+      const turnWordArray = this.state.turnWord.toUpperCase().split("");
+    
       if(dictionary.indexOf(fullWordString) === -1){
         alert("Word not valid!");
       } else {
-        
-        const turnWordArray = this.state.turnWord.toUpperCase().split("");
-        const filteredLetters = this.state.eachLetter.filter(letter => {
-          return turnWordArray.indexOf(letter) > -1;
-        });
-
-        for (let i = 0; i < filteredLetters.length; i++){
-          if(this.state.eachLetter.indexOf(filteredLetters[i]) === turnWordArray.indexOf(filteredLetters[i])){
-            document.getElementsByClassName(`allLetters ${filteredLetters[i]}`)[0].style.backgroundColor = "green";
-            document.getElementsByClassName(`allLetters ${filteredLetters[i]}`)[0].animate()
-            "flip-horizontal-bottom 0.4s cubic-bezier(0.455, 0.030, 0.515, 0.955) both";
-          }
-        }
-        
+        console.log(this.state.guesses)
+        this.charChecker(this.state.eachLetter, turnWordArray);
       }
-      //this.increaseIndex();
-      //this.updateAllWords(this.state.eachLetter);
-      //this.setState({eachLetter: []})
+      this.checkGuess(this.state.guesses)
     }
   }
 
   increaseIndex = () => {
     this.setState({index: this.state.index + 1})    
+  }
+
+  charChecker = (input, answer) => {
+    const test =  input.map((letter, index) => {
+      if(letter === answer[index]){
+        return true;
+      } else{
+        return false;
+      }
+    })
+
+    this.setState({guesses: test})
+  }
+
+  checkGuess = (guessArray) => {
+  const test = guessArray.map((correctPosition, index) => {
+      return document.getElementById
+    }
+    )
+    if(guessArray.every((element)=> element == true)){
+      console.log("Testing")
+    } else {
+      return
+    }
   }
 
   render(){
@@ -117,7 +130,10 @@ class Board extends React.Component {
     if(this.props.index === 0){
       return (
         <div className="gameBoard">
-          <BoardRow allWords={this.props.allWords[0]} eachLetter={this.props.eachLetter} index={this.props.index} />
+          <BoardRow 
+            allWords={this.props.allWords[0]} 
+            eachLetter={this.props.eachLetter} 
+            index={this.props.index} />
           <EmptyBoardRow />
           <EmptyBoardRow />
           <EmptyBoardRow />
@@ -184,6 +200,7 @@ class Board extends React.Component {
     
   }
 }
+
 class EmptyBoardRow extends React.Component {
   render() {
     return (
@@ -205,20 +222,20 @@ class BoardRow extends React.Component {
     if(this.props.allWords === undefined){
       return( 
       <div className='boardRow'>
-        <LetterBox eachLetter={this.props.eachLetter[0]}  />
-        <LetterBox eachLetter={this.props.eachLetter[1]} />
-        <LetterBox eachLetter={this.props.eachLetter[2]} />
-        <LetterBox eachLetter={this.props.eachLetter[3]} />
-        <LetterBox eachLetter={this.props.eachLetter[4]} />
+        <LetterBox eachLetter={this.props.eachLetter[0]} index={this.props.index} />
+        <LetterBox eachLetter={this.props.eachLetter[1]} index={this.props.index} />
+        <LetterBox eachLetter={this.props.eachLetter[2]} index={this.props.index} />
+        <LetterBox eachLetter={this.props.eachLetter[3]} index={this.props.index} />
+        <LetterBox eachLetter={this.props.eachLetter[4]} index={this.props.index} />
       </div>
     )} else if (this.props.allWords[0] !== ""){
       return( 
       <div className='boardRow'>
-        <LetterBox eachLetter={this.props.allWords[0]} />
-        <LetterBox eachLetter={this.props.allWords[1]} />
-        <LetterBox eachLetter={this.props.allWords[2]} />
-        <LetterBox eachLetter={this.props.allWords[3]} />
-        <LetterBox eachLetter={this.props.allWords[4]} />
+        <LetterBox eachLetter={this.props.allWords[0]} index={this.props.index} />
+        <LetterBox eachLetter={this.props.allWords[1]} index={this.props.index} />
+        <LetterBox eachLetter={this.props.allWords[2]} index={this.props.index} />
+        <LetterBox eachLetter={this.props.allWords[3]} index={this.props.index} />
+        <LetterBox eachLetter={this.props.allWords[4]} index={this.props.index} />
       </div>)
     }
     
@@ -229,7 +246,7 @@ class BoardRow extends React.Component {
 class LetterBox extends React.Component {
   render(){
     return(
-      <div className={`letterBox allLetters ${this.props.eachLetter}`} > 
+      <div className={`letterBox allLetters ${this.props.index} ${this.props.eachLetter}`} > 
         {this.props.eachLetter}
       </div>
     )
