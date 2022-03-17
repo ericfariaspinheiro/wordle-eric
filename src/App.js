@@ -19,31 +19,35 @@ class App extends React.Component {
   handleButtonClick = (e) => {
     const letterClicked = e.target.innerText;
     this.updateEachLetter(letterClicked)
-    this.updateCurrentLetter(letterClicked)
   }
 
   updateEachLetter = (newLetter) => {
     if(this.state.eachLetter.length < 5){
       this.setState({eachLetter: [...this.state.eachLetter, newLetter]})
-      
     } 
   }
 
-  updateAllWords = (wordToAdd) => {
+  updateAllWordsAndIndex = (wordToAdd) => {
     if(this.state.allWords.length < 6) {
       this.setState({allWords: [...this.state.allWords, wordToAdd]});
     }
-  }
-  
-  updateCurrentLetter = (newLetter) => {
-    this.setState({currentLetter: newLetter})
-  
+
+    this.setState({eachLetter: []})
+    setTimeout(()=>{
+        this.setState(prevState => ({
+          index: prevState.index + 1
+        }))
+      }, 1000)
   }
 
   handleDeleteClick = () => {
     const popLastLetter = [...this.state.eachLetter];
     popLastLetter.pop()
     this.setState({eachLetter: popLastLetter})
+  }
+
+  increaseIndex = () => {
+    this.setState({index: this.state.index + 1})    
   }
 
   handleEnterClick = () => {
@@ -54,19 +58,14 @@ class App extends React.Component {
       if(dictionary.indexOf(fullWordString) === -1){
         alert("Word not valid!");
       } else {
-        console.log(this.state.guesses)
         this.charChecker(this.state.eachLetter, turnWordArray);
       }
-      this.checkGuess(this.state.guesses)
+
     }
   }
 
-  increaseIndex = () => {
-    this.setState({index: this.state.index + 1})    
-  }
-
   charChecker = (input, answer) => {
-    const test =  input.map((letter, index) => {
+    const tester =  input.map((letter, index) => {
       if(letter === answer[index]){
         return true;
       } else{
@@ -74,20 +73,42 @@ class App extends React.Component {
       }
     })
 
-    this.setState({guesses: test})
+    const correctLetters = input.filter((letter, index) => {
+      if(answer.indexOf(letter) > -1 && tester[index] !== true){
+        return letter
+      }
+    });
+    
+    this.setState({guesses: tester});
+    setTimeout(()=> {
+      this.checkGuess(correctLetters)
+    }, 100)
+    
   }
 
-  checkGuess = (guessArray) => {
-  const test = guessArray.map((correctPosition, index) => {
-      return document.getElementById
-    }
-    )
-    if(guessArray.every((element)=> element == true)){
-      console.log("Testing")
+  checkGuess = (okLetters) => {
+    let stateGusses = this.state.guesses;
+    let correctGuess = stateGusses.every((element)=> element === true)
+    const guessRowElements = [...document.getElementsByClassName(`allLetters ${this.state.index}`)]
+
+    if(correctGuess === true){
+      //Game end
+      console.log("Correct")
     } else {
-      return
+      guessRowElements.forEach((item, indexer) => {
+        if(stateGusses[indexer] === true){
+          item.classList.add("correct")
+        } else if (stateGusses[indexer] !== true && okLetters.indexOf(item.innerText) > -1){
+          item.classList.add("present")
+        } else if (stateGusses[indexer] !== true && okLetters.indexOf(item.innerText) === -1){
+          item.classList.add("absent")
+        }
+      })
+
+      this.updateAllWordsAndIndex(this.state.eachLetter.join(""));
     }
   }
+
 
   render(){
     return (
@@ -222,20 +243,20 @@ class BoardRow extends React.Component {
     if(this.props.allWords === undefined){
       return( 
       <div className='boardRow'>
-        <LetterBox eachLetter={this.props.eachLetter[0]} index={this.props.index} />
-        <LetterBox eachLetter={this.props.eachLetter[1]} index={this.props.index} />
-        <LetterBox eachLetter={this.props.eachLetter[2]} index={this.props.index} />
-        <LetterBox eachLetter={this.props.eachLetter[3]} index={this.props.index} />
-        <LetterBox eachLetter={this.props.eachLetter[4]} index={this.props.index} />
+        <LetterBox eachLetter={this.props.eachLetter[0]} rowIndex="0" />
+        <LetterBox eachLetter={this.props.eachLetter[1]} rowIndex="1" />
+        <LetterBox eachLetter={this.props.eachLetter[2]} rowIndex="2" />
+        <LetterBox eachLetter={this.props.eachLetter[3]} rowIndex="3" />
+        <LetterBox eachLetter={this.props.eachLetter[4]} rowIndex="4" />
       </div>
     )} else if (this.props.allWords[0] !== ""){
       return( 
       <div className='boardRow'>
-        <LetterBox eachLetter={this.props.allWords[0]} index={this.props.index} />
-        <LetterBox eachLetter={this.props.allWords[1]} index={this.props.index} />
-        <LetterBox eachLetter={this.props.allWords[2]} index={this.props.index} />
-        <LetterBox eachLetter={this.props.allWords[3]} index={this.props.index} />
-        <LetterBox eachLetter={this.props.allWords[4]} index={this.props.index} />
+        <LetterBox eachLetter={this.props.allWords[0]} rowIndex="0" />
+        <LetterBox eachLetter={this.props.allWords[1]} rowIndex="1" />
+        <LetterBox eachLetter={this.props.allWords[2]} rowIndex="2" />
+        <LetterBox eachLetter={this.props.allWords[3]} rowIndex="3" />
+        <LetterBox eachLetter={this.props.allWords[4]} rowIndex="4" />
       </div>)
     }
     
@@ -246,7 +267,7 @@ class BoardRow extends React.Component {
 class LetterBox extends React.Component {
   render(){
     return(
-      <div className={`letterBox allLetters ${this.props.index} ${this.props.eachLetter}`} > 
+      <div className={`letterBox allLetters ${this.props.rowIndex} ${this.props.eachLetter}`} > 
         {this.props.eachLetter}
       </div>
     )
