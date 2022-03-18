@@ -129,11 +129,6 @@ class App extends React.Component {
             onEnderClick={this.handleEnterClick}
           />
         </div>
-        <div>
-          <h3 className='debug'>{this.state.eachLetter.length}</h3>
-          <h3 className='debug'>{this.state.turnWord}</h3>
-          <h3 className='debug'>{this.state.allWords}</h3>
-        </div>
       </div>
     );
   }
@@ -151,6 +146,7 @@ class Header extends React.Component {
 
 class Board extends React.Component {
   render(){
+    
     if(this.props.index === 0){
       return (
         <div className="gameBoard">
@@ -240,65 +236,65 @@ class Board extends React.Component {
           <BoardRow 
             allWords={this.props.allWords[0]} 
             eachLetter={this.props.eachLetter}  
-            index={0}
+            rowIndex={0}
           />
           <BoardRow 
             allWords={this.props.allWords[1]} 
             eachLetter={this.props.eachLetter}  
-            index={1}
+            rowIndex={1}
           />
           <BoardRow 
             allWords={this.props.allWords[2]} 
             eachLetter={this.props.eachLetter}  
-            index={2}
+            rowIndex={2}
           />
           <BoardRow 
             allWords={this.props.allWords[3]} 
             eachLetter={this.props.eachLetter}  
-            index={3}
+            rowIndex={3}
           />
           <BoardRow 
             allWords={this.props.allWords[4]} 
             eachLetter={this.props.eachLetter}  
-            index={4}
+            rowIndex={4}
           />
           <EmptyBoardRow />
-        </div> 
+        </div>  
       )
-    } else if (this.props.index === 5){
+    } else if (this.props.index >= 5){
       return (
         <div className="gameBoard">
           <BoardRow 
             allWords={this.props.allWords[0]} 
             eachLetter={this.props.eachLetter}  
-            index={0}
+            rowIndex={0}
           />
           <BoardRow 
             allWords={this.props.allWords[1]} 
             eachLetter={this.props.eachLetter}  
-            index={1}
+            rowIndex={1}
           />
           <BoardRow 
             allWords={this.props.allWords[2]} 
             eachLetter={this.props.eachLetter}  
-            index={2}
+            rowIndex={2}
           />
           <BoardRow 
             allWords={this.props.allWords[3]} 
             eachLetter={this.props.eachLetter}  
-            index={3}
+            rowIndex={3}
           />
           <BoardRow 
             allWords={this.props.allWords[4]} 
             eachLetter={this.props.eachLetter}  
-            index={4}
+            rowIndex={4}
           />
           <BoardRow 
             allWords={this.props.allWords[5]} 
             eachLetter={this.props.eachLetter}  
-            index={5}
+            rowIndex={5}
           />
-        </div> 
+        </div>
       )
     }
   }
@@ -355,7 +351,6 @@ class LetterBox extends React.Component {
     )
   }
 }
-
 
 class Keyboard extends React.Component {
   render(){

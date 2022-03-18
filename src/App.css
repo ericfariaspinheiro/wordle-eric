@@ -27,8 +27,10 @@ body {
 
 #pageTitle {
   margin: 0;
-  padding-top: 15px;
-  font-family: Arial, sans-serif;
+  padding-top: 27px;
+  font-family: "Monoton", cursive;
+  font-family: "Press Start 2P", cursive;
+  font-size: x-large;
 }
 
 #fullGame {
