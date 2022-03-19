@@ -2,6 +2,8 @@ import React from 'react';
 import './App.css';
 import {dictionary} from './dictionary'
 
+const keyboardKeys = ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", "A", "S", "D", "F", "G", "H", "J", "K", "L", "enter", "Z", "X","C","V","B","N","M", "del"];
+
 class App extends React.Component {
   state = {
     turnWord: "",
@@ -14,6 +16,7 @@ class App extends React.Component {
   componentDidMount(){
     const answerWord = dictionary[Math.floor(Math.random()*dictionary.length)];
     this.setState({turnWord: answerWord})
+    console.log(answerWord)
   }
 
   handleButtonClick = (e) => {
@@ -94,9 +97,11 @@ class App extends React.Component {
     if(correctGuess === true){
       //Game end
       console.log("Correct")
+      
       guessRowElements.forEach((item) => {
           item.classList.add("correct")}
       )
+      window.alert("Congrats!!")
     } else {
       guessRowElements.forEach((item, indexer) => {
         if(stateGusses[indexer] === true){
@@ -354,41 +359,32 @@ class LetterBox extends React.Component {
 
 class Keyboard extends React.Component {
   render(){
+    const keyboardFrame = keyboardKeys.map((key)=>{
+      if (key === "enter"){
+        return (
+          <button className='keyButton' onClick={this.props.onEnderClick}>{key}</button>
+        )
+      } else if (key === "del"){
+        return(
+          <button className='keyButton' onClick={this.props.onDelClick}>{key}</button>
+        )
+      } else {
+        return (
+          <button className='keyButton' onClick={this.props.onButtonclick}>{key}</button>
+        )
+      }
+    })
+
     return(
       <div id="keyboard">
         <div className='keyboardRow'>
-          <button className='keyButton' onClick={this.props.onButtonclick}>Q</button>
-          <button className='keyButton' onClick={this.props.onButtonclick}>W</button>
-          <button className='keyButton' onClick={this.props.onButtonclick}>E</button>
-          <button className='keyButton' onClick={this.props.onButtonclick}>R</button>
-          <button className='keyButton' onClick={this.props.onButtonclick}>T</button>
-          <button className='keyButton' onClick={this.props.onButtonclick}>Y</button>
-          <button className='keyButton' onClick={this.props.onButtonclick}>U</button>
-          <button className='keyButton' onClick={this.props.onButtonclick}>I</button>
-          <button className='keyButton' onClick={this.props.onButtonclick}>O</button>
-          <button className='keyButton' onClick={this.props.onButtonclick}>P</button>
+          {keyboardFrame.slice(0, 10)}
         </div>
         <div className='keyboardRow'>
-          <button className='keyButton' onClick={this.props.onButtonclick}>A</button>
-          <button className='keyButton' onClick={this.props.onButtonclick}>S</button>
-          <button className='keyButton' onClick={this.props.onButtonclick}>D</button>
-          <button className='keyButton' onClick={this.props.onButtonclick}>F</button>
-          <button className='keyButton' onClick={this.props.onButtonclick}>G</button>
-          <button className='keyButton' onClick={this.props.onButtonclick}>H</button>
-          <button className='keyButton' onClick={this.props.onButtonclick}>J</button>
-          <button className='keyButton' onClick={this.props.onButtonclick}>K</button>
-          <button className='keyButton' onClick={this.props.onButtonclick}>L</button>
+          {keyboardFrame.slice(10, 19)}
         </div>
         <div className='keyboardRow'>
-          <button className='keyButton' onClick={this.props.onEnderClick}>enter</button>
-          <button className='keyButton' onClick={this.props.onButtonclick}>Z</button>
-          <button className='keyButton' onClick={this.props.onButtonclick}>X</button>
-          <button className='keyButton' onClick={this.props.onButtonclick}>C</button>
-          <button className='keyButton' onClick={this.props.onButtonclick}>V</button>
-          <button className='keyButton' onClick={this.props.onButtonclick}>B</button>
-          <button className='keyButton' onClick={this.props.onButtonclick}>N</button>
-          <button className='keyButton' onClick={this.props.onButtonclick}>M</button>
-          <button className='keyButton' onClick={this.props.onDelClick}>del</button>
+          {keyboardFrame.slice(19)}
         </div>
       </div>
     )
