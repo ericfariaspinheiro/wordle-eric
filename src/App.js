@@ -1,8 +1,9 @@
 import React from 'react';
-import './App.css';
+import './Styles/App.css';
 import {dictionary} from './dictionary'
-
-const keyboardKeys = ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", "A", "S", "D", "F", "G", "H", "J", "K", "L", "enter", "Z", "X","C","V","B","N","M", "del"];
+import Modal from './Components/Modal'
+import Keyboard from './Components/Keyboard'
+import Header from './Components/Header'
 
 class App extends React.Component {
   state = {
@@ -14,6 +15,10 @@ class App extends React.Component {
   }
 
   componentDidMount(){
+    this.pickRandomWord();
+  }
+
+  pickRandomWord = () => {
     const answerWord = dictionary[Math.floor(Math.random()*dictionary.length)];
     this.setState({turnWord: answerWord})
     console.log(answerWord)
@@ -96,12 +101,13 @@ class App extends React.Component {
 
     if(correctGuess === true){
       //Game end
-      console.log("Correct")
-      
       guessRowElements.forEach((item) => {
           item.classList.add("correct")}
       )
-      window.alert("Congrats!!")
+      setTimeout(()=>{
+        document.getElementById("modalWindow").classList.remove("invisible");
+      }, 600)
+      
     } else {
       guessRowElements.forEach((item, indexer) => {
         if(stateGusses[indexer] === true){
@@ -117,6 +123,16 @@ class App extends React.Component {
     }
   }
 
+  resetGame = () => {
+    this.pickRandomWord()
+    
+    this.setState({
+      eachLetter: [],
+      allWords: [],
+      index: 0,
+      guesses: []
+    })
+  }
 
   render(){
     return (
@@ -134,261 +150,209 @@ class App extends React.Component {
             onEnderClick={this.handleEnterClick}
           />
         </div>
+        <Modal 
+          onResetClick={this.resetGame}
+        />
       </div>
     );
   }
 }
 
-class Header extends React.Component {
-  render() {
-    return(
-      <div id='pageHeader'>
-        <h1 id="pageTitle">Eric's Wordle</h1>
-      </div>
-    )
-  }
-}
-
-class Board extends React.Component {
-  render(){
-    
-    if(this.props.index === 0){
-      return (
-        <div className="gameBoard">
-          <BoardRow 
-            allWords={this.props.allWords[0]} 
-            eachLetter={this.props.eachLetter} 
-            rowIndex={0} />
-          <EmptyBoardRow />
-          <EmptyBoardRow />
-          <EmptyBoardRow />
-          <EmptyBoardRow />
-          <EmptyBoardRow />
-        </div> 
-      )
-    } else if (this.props.index === 1){
-      return (
-        <div className="gameBoard">
-          <BoardRow 
-            allWords={this.props.allWords[0]} 
-            eachLetter={this.props.eachLetter} 
-            rowIndex={0}
-          />
-          <BoardRow 
-            allWords={this.props.allWords[1]} 
-            eachLetter={this.props.eachLetter} 
-            rowIndex={1}  
-          />
-          <EmptyBoardRow />
-          <EmptyBoardRow />
-          <EmptyBoardRow />
-          <EmptyBoardRow />
-        </div> 
-      )
-    } else if (this.props.index === 2){
-      return (
-        <div className="gameBoard">
-          <BoardRow 
-            allWords={this.props.allWords[0]} 
-            eachLetter={this.props.eachLetter}  
-            rowIndex={0}
-          />
-          <BoardRow 
-            allWords={this.props.allWords[1]} 
-            eachLetter={this.props.eachLetter}  
-            rowIndex={1}
-          />
-          <BoardRow 
-            allWords={this.props.allWords[2]} 
-            eachLetter={this.props.eachLetter}  
-            rowIndex={2}
-          />
-          <EmptyBoardRow />
-          <EmptyBoardRow />
-          <EmptyBoardRow />
-        </div> 
-      )
-    } else if (this.props.index === 3){
-      return (
-        <div className="gameBoard">
-          <BoardRow 
-            allWords={this.props.allWords[0]} 
-            eachLetter={this.props.eachLetter}  
-            rowIndex={0}
-          />
-          <BoardRow 
-            allWords={this.props.allWords[1]} 
-            eachLetter={this.props.eachLetter}  
-            rowIndex={1}
-          />
-          <BoardRow 
-            allWords={this.props.allWords[2]} 
-            eachLetter={this.props.eachLetter}  
-            rowIndex={2}
-          />
-          <BoardRow 
-            allWords={this.props.allWords[3]} 
-            eachLetter={this.props.eachLetter}  
-            rowIndex={3}
-          />
-          <EmptyBoardRow />
-          <EmptyBoardRow />
-        </div> 
-      )
-    } else if (this.props.index === 4){
-      return (
-        <div className="gameBoard">
-          <BoardRow 
-            allWords={this.props.allWords[0]} 
-            eachLetter={this.props.eachLetter}  
-            rowIndex={0}
-          />
-          <BoardRow 
-            allWords={this.props.allWords[1]} 
-            eachLetter={this.props.eachLetter}  
-            rowIndex={1}
-          />
-          <BoardRow 
-            allWords={this.props.allWords[2]} 
-            eachLetter={this.props.eachLetter}  
-            rowIndex={2}
-          />
-          <BoardRow 
-            allWords={this.props.allWords[3]} 
-            eachLetter={this.props.eachLetter}  
-            rowIndex={3}
-          />
-          <BoardRow 
-            allWords={this.props.allWords[4]} 
-            eachLetter={this.props.eachLetter}  
-            rowIndex={4}
-          />
-          <EmptyBoardRow />
-        </div>  
-      )
-    } else if (this.props.index >= 5){
-      return (
-        <div className="gameBoard">
-          <BoardRow 
-            allWords={this.props.allWords[0]} 
-            eachLetter={this.props.eachLetter}  
-            rowIndex={0}
-          />
-          <BoardRow 
-            allWords={this.props.allWords[1]} 
-            eachLetter={this.props.eachLetter}  
-            rowIndex={1}
-          />
-          <BoardRow 
-            allWords={this.props.allWords[2]} 
-            eachLetter={this.props.eachLetter}  
-            rowIndex={2}
-          />
-          <BoardRow 
-            allWords={this.props.allWords[3]} 
-            eachLetter={this.props.eachLetter}  
-            rowIndex={3}
-          />
-          <BoardRow 
-            allWords={this.props.allWords[4]} 
-            eachLetter={this.props.eachLetter}  
-            rowIndex={4}
-          />
-          <BoardRow 
-            allWords={this.props.allWords[5]} 
-            eachLetter={this.props.eachLetter}  
-            rowIndex={5}
-          />
-        </div>
-      )
-    }
-  }
-}
-
-class EmptyBoardRow extends React.Component {
-  render() {
+function Board (props) {
+  if(props.index === 0){
     return (
-    <div className='boardRow emptyBoardRow'>
-      <LetterBox eachLetter={" "} />
-      <LetterBox eachLetter={" "} />
-      <LetterBox eachLetter={" "} />
-      <LetterBox eachLetter={" "} />
-      <LetterBox eachLetter={" "} />
-    </div>
-    )  
-  }
-}
-
-class BoardRow extends React.Component {
-
-  render() {
-
-    if(this.props.allWords === undefined){
-      return( 
-      <div className='boardRow'>
-        <LetterBox eachLetter={this.props.eachLetter[0]} rowIndex={this.props.rowIndex} />
-        <LetterBox eachLetter={this.props.eachLetter[1]} rowIndex={this.props.rowIndex} />
-        <LetterBox eachLetter={this.props.eachLetter[2]} rowIndex={this.props.rowIndex} />
-        <LetterBox eachLetter={this.props.eachLetter[3]} rowIndex={this.props.rowIndex} />
-        <LetterBox eachLetter={this.props.eachLetter[4]} rowIndex={this.props.rowIndex} />
-      </div>
-    )} else if (this.props.allWords[0] !== ""){
-      return( 
-      <div className='boardRow'>
-        <LetterBox eachLetter={this.props.allWords[0]} rowIndex={this.props.rowIndex} />
-        <LetterBox eachLetter={this.props.allWords[1]} rowIndex={this.props.rowIndex} />
-        <LetterBox eachLetter={this.props.allWords[2]} rowIndex={this.props.rowIndex} />
-        <LetterBox eachLetter={this.props.allWords[3]} rowIndex={this.props.rowIndex} />
-        <LetterBox eachLetter={this.props.allWords[4]} rowIndex={this.props.rowIndex} />
-      </div>)
-    }
-    
-    
-  }
-}
-
-class LetterBox extends React.Component {
-  render(){
-    return(
-      <div className={`letterBox allLetters ${this.props.rowIndex} ${this.props.eachLetter}`} > 
-        {this.props.eachLetter}
+      <div className="gameBoard">
+        <BoardRow 
+          allWords={props.allWords[0]} 
+          eachLetter={props.eachLetter} 
+          rowIndex={0} />
+        <EmptyBoardRow />
+        <EmptyBoardRow />
+        <EmptyBoardRow />
+        <EmptyBoardRow />
+        <EmptyBoardRow />
+      </div> 
+    )
+  } else if (props.index === 1){
+    return (
+      <div className="gameBoard">
+        <BoardRow 
+          allWords={props.allWords[0]} 
+          eachLetter={props.eachLetter} 
+          rowIndex={0}
+        />
+        <BoardRow 
+          allWords={props.allWords[1]} 
+          eachLetter={props.eachLetter} 
+          rowIndex={1}  
+        />
+        <EmptyBoardRow />
+        <EmptyBoardRow />
+        <EmptyBoardRow />
+        <EmptyBoardRow />
+      </div> 
+    )
+  } else if (props.index === 2){
+    return (
+      <div className="gameBoard">
+        <BoardRow 
+          allWords={props.allWords[0]} 
+          eachLetter={props.eachLetter}  
+          rowIndex={0}
+        />
+        <BoardRow 
+          allWords={props.allWords[1]} 
+          eachLetter={props.eachLetter}  
+          rowIndex={1}
+        />
+        <BoardRow 
+          allWords={props.allWords[2]} 
+          eachLetter={props.eachLetter}  
+          rowIndex={2}
+        />
+        <EmptyBoardRow />
+        <EmptyBoardRow />
+        <EmptyBoardRow />
+      </div> 
+    )
+  } else if (props.index === 3){
+    return (
+      <div className="gameBoard">
+        <BoardRow 
+          allWords={props.allWords[0]} 
+          eachLetter={props.eachLetter}  
+          rowIndex={0}
+        />
+        <BoardRow 
+          allWords={props.allWords[1]} 
+          eachLetter={props.eachLetter}  
+          rowIndex={1}
+        />
+        <BoardRow 
+          allWords={props.allWords[2]} 
+          eachLetter={props.eachLetter}  
+          rowIndex={2}
+        />
+        <BoardRow 
+          allWords={props.allWords[3]} 
+          eachLetter={props.eachLetter}  
+          rowIndex={3}
+        />
+        <EmptyBoardRow />
+        <EmptyBoardRow />
+      </div> 
+    )
+  } else if (props.index === 4){
+    return (
+      <div className="gameBoard">
+        <BoardRow 
+          allWords={props.allWords[0]} 
+          eachLetter={props.eachLetter}  
+          rowIndex={0}
+        />
+        <BoardRow 
+          allWords={props.allWords[1]} 
+          eachLetter={props.eachLetter}  
+          rowIndex={1}
+        />
+        <BoardRow 
+          allWords={props.allWords[2]} 
+          eachLetter={props.eachLetter}  
+          rowIndex={2}
+        />
+        <BoardRow 
+          allWords={props.allWords[3]} 
+          eachLetter={props.eachLetter}  
+          rowIndex={3}
+        />
+        <BoardRow 
+          allWords={props.allWords[4]} 
+          eachLetter={props.eachLetter}  
+          rowIndex={4}
+        />
+        <EmptyBoardRow />
+      </div>  
+    )
+  } else if (props.index >= 5){
+    return (
+      <div className="gameBoard">
+        <BoardRow 
+          allWords={props.allWords[0]} 
+          eachLetter={props.eachLetter}  
+          rowIndex={0}
+        />
+        <BoardRow 
+          allWords={props.allWords[1]} 
+          eachLetter={props.eachLetter}  
+          rowIndex={1}
+        />
+        <BoardRow 
+          allWords={props.allWords[2]} 
+          eachLetter={props.eachLetter}  
+          rowIndex={2}
+        />
+        <BoardRow 
+          allWords={props.allWords[3]} 
+          eachLetter={props.eachLetter}  
+          rowIndex={3}
+        />
+        <BoardRow 
+          allWords={props.allWords[4]} 
+          eachLetter={props.eachLetter}  
+          rowIndex={4}
+        />
+        <BoardRow 
+          allWords={props.allWords[5]} 
+          eachLetter={props.eachLetter}  
+          rowIndex={5}
+        />
       </div>
     )
   }
 }
 
-class Keyboard extends React.Component {
-  render(){
-    const keyboardFrame = keyboardKeys.map((key)=>{
-      if (key === "enter"){
-        return (
-          <button className='keyButton' onClick={this.props.onEnderClick}>{key}</button>
-        )
-      } else if (key === "del"){
-        return(
-          <button className='keyButton' onClick={this.props.onDelClick}>{key}</button>
-        )
-      } else {
-        return (
-          <button className='keyButton' onClick={this.props.onButtonclick}>{key}</button>
-        )
-      }
-    })
+function EmptyBoardRow (props) {
+  return (
+  <div className='boardRow emptyBoardRow'>
+    <LetterBox eachLetter={" "} />
+    <LetterBox eachLetter={" "} />
+    <LetterBox eachLetter={" "} />
+    <LetterBox eachLetter={" "} />
+    <LetterBox eachLetter={" "} />
+  </div>
+  )  
+}
 
-    return(
-      <div id="keyboard">
-        <div className='keyboardRow'>
-          {keyboardFrame.slice(0, 10)}
-        </div>
-        <div className='keyboardRow'>
-          {keyboardFrame.slice(10, 19)}
-        </div>
-        <div className='keyboardRow'>
-          {keyboardFrame.slice(19)}
-        </div>
+function BoardRow (props) {
+  if(props.allWords === undefined){
+    return( 
+      <div className='boardRow'>
+        <LetterBox eachLetter={props.eachLetter[0]} rowIndex={props.rowIndex} />
+        <LetterBox eachLetter={props.eachLetter[1]} rowIndex={props.rowIndex} />
+        <LetterBox eachLetter={props.eachLetter[2]} rowIndex={props.rowIndex} />
+        <LetterBox eachLetter={props.eachLetter[3]} rowIndex={props.rowIndex} />
+        <LetterBox eachLetter={props.eachLetter[4]} rowIndex={props.rowIndex} />
+      </div>
+    )
+  } else if (props.allWords[0] !== ""){
+    return( 
+      <div className='boardRow'>
+        <LetterBox eachLetter={props.allWords[0]} rowIndex={props.rowIndex} />
+        <LetterBox eachLetter={props.allWords[1]} rowIndex={props.rowIndex} />
+        <LetterBox eachLetter={props.allWords[2]} rowIndex={props.rowIndex} />
+        <LetterBox eachLetter={props.allWords[3]} rowIndex={props.rowIndex} />
+        <LetterBox eachLetter={props.allWords[4]} rowIndex={props.rowIndex} />
       </div>
     )
   }
+}
+
+function LetterBox (props) {
+    return(
+      <div className={`letterBox allLetters ${props.rowIndex} ${props.eachLetter}`} > 
+        {props.eachLetter}
+      </div>
+    )
 }
 
 export default App;
