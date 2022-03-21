@@ -18,7 +18,7 @@ body {
 #pageHeader {
   width: 100%;
   height: 70px;
-  border-bottom: black solid 1px;
+  border-bottom: gray solid 1px;
   text-align: center;
   color: white;
   background: rgb(40, 40, 40);
