@@ -1,7 +1,3 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 body {
   background: rgb(40, 40, 40);
   background: radial-gradient(
@@ -139,6 +135,16 @@ body {
     cubic-bezier(0.455, 0.03, 0.515, 0.955) both;
   animation: rotate-vert-center 0.5s cubic-bezier(0.455, 0.03, 0.515, 0.955)
     both;
+}
+
+@media only screen and (max-width: 480px) {
+  .gameBoard {
+    margin: 12% 0;
+  }
+
+  .keyButton {
+    padding: 12px 11px;
+  }
 }
 
 @-webkit-keyframes rotate-vert-center {
